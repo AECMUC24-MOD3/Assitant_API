@@ -13,6 +13,9 @@ app = Flask(__name__)
 client = OpenAI()
 assistant_id = None
 assistant_thread_id = None
+json_file_id=0
+pdf_file_id=0
+Vector_Store_id=0
 vector_store = client.beta.vector_stores.create(name="Json Format")
 
 @app.route('/upload_json', methods=['POST'])
@@ -23,6 +26,9 @@ def upload_json():
     
     with open(json_path, "rb") as file_data:
         file = client.files.create(file=file_data, purpose="assistants")
+        file_batch = client.beta.vector_stores.file_batches.upload_and_poll(vector_store_id=vector_store.id, files=file)
+        json_file_id=file.id
+        Vector_Store_id=file_batch.id
     
     return jsonify({"message": "JSON file uploaded", "file_id": file.id})
 
@@ -34,13 +40,11 @@ def upload_pdf():
     
     with open(pdf_path, "rb") as file_data:
         file = client.files.create(file=file_data, purpose="assistants")
-    
+        pdf_file_id=file.id
     return jsonify({"message": "PDF file uploaded", "file_id": file.id})
 
 @app.route('/process_files', methods=['POST'])
 def process_files():
-    json_file_id = request.json['json_file_id']
-    pdf_file_id = request.json['pdf_file_id']
 
     purpose = """Your job is to extract the data from PDF and fill the provided JSON format with only the information in the PDF provided. 
     No invention and elaboration of data is acceptable.
