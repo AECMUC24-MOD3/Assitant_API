@@ -1,0 +1,330 @@
+
+"schemas": {
+  "ElementId": {
+    "type": "string",
+    "format": "uuid",
+    "description": "A unique identifier for an element",
+    "example": "4dd643ff-7ec7-4666-9c88-50b7d3da34e4"
+  },
+  "PrefabElement": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "$ref": "#/components/schemas/ElementId"
+      },
+      "name": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "boundingBox": {
+        "type": "object",
+        "properties": {
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "depth": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "width",
+          "height",
+          "depth"
+        ],
+        "description": "The bounding box of an element in millimeters."
+      },
+      "images": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "buildingSystem": {
+        "type": "string",
+        "enum": [
+          "Wall",
+          "Balcony",
+          "Pod",
+          "Frame",
+          "Facade",
+          "Floors",
+          "Modules",
+          "Plants",
+          "Roofs",
+          "Stairs"
+        ]
+      },
+      "productCategory": {
+        "type": "string",
+        "enum": [
+          "Boarding",
+          "Solid Wall Panels",
+          "Closed Wall Panels",
+          "Twinwall",
+          "Open Wall Panels",
+          "Structural Insulated Panels (SIPs)",
+          "Insulated Concrete Panels",
+          "Prefabricated Balcony",
+          "Pod",
+          "Whole Building System",
+          "Structural Frame",
+          "Facade System",
+          "Hollowcore Floor",
+          "Concrete Lattice Floor",
+          "Floor Cassettes",
+          "Solid Floor Panels",
+          "Volumetric module",
+          "Prefabricated Plant",
+          "Roof Panel",
+          "Roof Truss",
+          "Prefabricated Stairs"
+        ]
+      },
+      "material": {
+        "type": "object",
+        "properties": {
+          "finishMaterial": {
+            "type": "string",
+            "enum": [
+              "Timber",
+              "Steel",
+              "Concrete",
+              "Hybrid",
+              "Other"
+            ]
+          },
+          "structuralMaterial": {
+            "type": "string",
+            "enum": [
+              "Timber",
+              "Steel",
+              "Concrete",
+              "Hybrid",
+              "Other"
+            ]
+          }
+        },
+        "required": [
+          "finishMaterial",
+          "structuralMaterial"
+        ]
+      },
+      "dimensional": {
+        "type": "object",
+        "properties": {
+          "width": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "min",
+              "max"
+            ]
+          },
+          "height": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "min",
+              "max"
+            ]
+          },
+          "length": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "min",
+              "max"
+            ]
+          }
+        },
+        "required": [
+          "width",
+          "height",
+          "length"
+        ]
+      },
+      "structuralProperties": {
+        "type": "object",
+        "properties": {
+          "loadBearingCapacity": {
+            "type": "object",
+            "properties": {
+              "maximumLoad": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "N",
+                  "kN",
+                  "lbf",
+                  "kgf"
+                ]
+              },
+              "loadDistribution": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "maximumLoad",
+              "unit",
+              "loadDistribution"
+            ]
+          }
+        }
+      },
+      "performance": {
+        "type": "object",
+        "properties": {
+          "resistanceToFireClassification": {
+            "type": "string",
+            "enum": [
+              "A1",
+              "A2",
+              "B",
+              "C",
+              "D",
+              "E",
+              "F",
+              "1-hour",
+              "2-hour",
+              "3-hour",
+              "4-hour"
+            ]
+          },
+          "thermalTransmittance": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "acousticProperties": {
+            "type": "object",
+            "properties": {
+              "soundInsulationRating": {
+                "type": "string"
+              },
+              "acousticPerformance": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "soundInsulationRating",
+              "acousticPerformance"
+            ]
+          }
+        },
+        "required": [
+          "resistanceToFireClassification",
+          "thermalTransmittance"
+        ]
+      },
+      "sustainability": {
+        "type": "object",
+        "properties": {
+          "countryOfManufacturing": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "A+",
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+          },
+        },
+        "required": [
+          "countryOfManufacturing",
+          "classification"
+        ]
+      },
+      "documentationAndCompliance": {
+        "type": "object",
+        "properties": {
+          "technicalSpecifications": {
+            "type": "string"
+          },
+          "certifications": {
+            "type": "object",
+            "properties": {
+              "certificationTypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "regulatoryApprovals": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "certificationTypes",
+              "regulatoryApprovals"
+            ]
+          }
+        },
+        "required": [
+          "technicalSpecifications",
+          "certifications"
+        ]
+      },
+      "lifecycleAndMaintenance": {
+        "type": "object",
+        "properties": {
+          "expectedLifespan": {
+            "type": "string"
+          },
+          "maintenanceRequirements": {
+            "type": "string"
+          },
+          "warranty": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "description",
+      "boundingBox",
+      "images",
+      "buildingSystem",
+      "productCategory",
+      "material",
+      "dimensional"
+    ],
+    "description": "Prefab Element"
+  }
+}
